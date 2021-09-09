@@ -3,7 +3,7 @@ import cv2
 import torch
 from typing import Dict, List, Optional, Tuple, Union, Any
 from pathlib import Path
-from skimage import transform
+import re
 
 
 def load_rgb(image_path: Union[Path, str], lib: str = "cv2") -> np.array:
@@ -70,17 +70,6 @@ def rename_layers(
         result[key] = value
 
     return result
-
-
-def temp_resize(output_size, image):
-    h, w = image.shape[:2]
-    if h > w:
-        new_h, new_w = output_size * h // w, output_size
-    else:
-        new_h, new_w = output_size, output_size * w // h
-
-    resized_image = transform.resize(image, (new_h, new_w), mode='constant')
-    return resized_image
 
 
 def image_to_tensor(image):
