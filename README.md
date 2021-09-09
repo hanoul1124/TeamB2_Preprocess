@@ -37,7 +37,7 @@
     # case2
     # 사전에 서버에서 모델을 미리 생성해두고 싶은 경우, 다음을 통해 모델을 생성한다.
     from create_model import *
-    from preprocess import resizing_human_with_model
+    from preprocess import resizing_human
     
     model = create_model('Unet_human')
     model.eval()
