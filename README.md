@@ -1,5 +1,8 @@
 ## 전처리 function
 
+- 필요 패키지를 사전에 설치한다.
+    - `pip install -r requirements.txt`
+
 - 본 저장소에 있는 모든 py file을 필요로 한다
 
 - 위 python file들과 동일 경로에 pretrained_models directory를 생성하고, 그 내부에 다음 pretrained model을 저장한다.
@@ -51,5 +54,48 @@
     python main.py resize-cloth <Image path> <Save path> --temp-size <int:temp_size>
     ```
     
+
+
+
+### Flask와 함께 사용하기
+
+- 저장소에 간단한 예시를 위한 flask를 실행하는 app.py과 upload.html을 올려뒀으니, 참고할 수 있다.
+
+```python
+from flask import Flask, request
+from preprocess import resizing_human
+from create_model import *
+
+app = Flask(__name__)
+
+
+# case1: model을 사전에 생성하지 않은 방식
+@app.route('/file', methods=['POST'])
+def file_upload():
+    file = request.files['file']
+    resized_img = resizing_human(file, temp_size=384)
     
+    resized_img.save('./uploaded_file.jpg')
+    return 'upload completed!'
+
+# -------------------------------------------------------------------------------
+# case2: 사전에 모델을 생성하는 방식
+net = create_model('Unet_human')
+net.eval()
+
+
+@app.route('/file', methods=['POST'])
+def file_upload():
+    file = request.files['file']
+    resized_img = resizing_human(file, model=net)
+    
+    resized_img.save('./uploaded_file.jpg')
+    return 'upload completed!'
+
+
+if __name__ == '__main__':
+    app.run()
+```
+
+
 
