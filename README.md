@@ -26,12 +26,24 @@
     # Human binarizatoin
     from preprocess import resizing_human
     
+    # case1
     # 업로드된 requests.files['file'] FileStorage 객체를 인자로 제공
-    resized_image = resizing_human(<image_file>, <temp_size>)
-    
-    # temp_size : Unet Inference 전 소요시간을 줄이기 위한 임시 리사이징 크기
-    # default = 512로, 꼭 필요한 파라미터는 아님
+    # resizing_human(<image_file>, <temp_size>, <model>)
+    # temp_size : Unet Inference 전 소요시간을 줄이기 위한 임시 리사이징 크기. default = 512
+    # model: 사전에 모델을 선언해 둔 경우. default = None
     resized_image = resizing_human(requests.files['file'])
+    
+    
+    # case2
+    # 사전에 서버에서 모델을 미리 생성해두고 싶은 경우, 다음을 통해 모델을 생성한다.
+    from create_model import *
+    from preprocess import resizing_human_with_model
+    
+    model = create_model('Unet_human')
+    model.eval()
+    
+    # 모델을 생성하고 추론 모드로 설정한 이후, 다음 함수를 사용하여 동일한 동작을 수행
+    resized_image = resizing_human(request.files['file'], model=model, temp_size=384)
     ```
     
     ```bash

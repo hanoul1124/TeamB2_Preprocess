@@ -4,8 +4,8 @@ from resize import resizing
 from tqdm import tqdm
 
 
-def resizing_human(image_file, temp_size=512):
-    temp_img, temp_mask = human_binarization(image_file, temp_size)
+def resizing_human(image_file, model=None, temp_size=512):
+    temp_img, temp_mask = human_binarization(image_file, model, temp_size)
     resized_img, _ = resizing(temp_img, temp_mask)
     return resized_img
 

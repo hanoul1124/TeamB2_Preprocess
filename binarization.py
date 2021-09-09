@@ -12,9 +12,15 @@ import cv2
 from tqdm import tqdm
 
 
-def human_binarization(image_file, temp_size):
-    net = create_model("Unet_human")
-    net.eval()
+def human_binarization(image_file, model, temp_size):
+    # 이미 사전에 서버에서 create_model()을 사용하여 모델을 선언하고,
+    # model.eval()로 모델을 evaluation mode로 전환시키고
+    # model parameter로 제공한 경우
+    if model:
+        net = model
+    else:
+        net = create_model("Unet_human")
+        net.eval()
 
     image = io.imread(image_file)
     resized_image = temp_resize(temp_size, image)
