@@ -23,11 +23,16 @@ def human_binarization(image_file, model, temp_size):
         net.eval()
 
     image = io.imread(image_file)
-    resized_image = temp_resize(temp_size, image)
+    # resized_image = temp_resize(temp_size, image)
+    resized_image = image
     tmp = (resized_image*255).astype(np.uint8)
     orig_img = Image.fromarray(tmp)
 
     image_tensor = image_to_tensor(resized_image)
+
+    if torch.cuda.is_available():
+        net.cuda()
+        image_tensor = image_to_tensor(resized_image).cuda()
 
     d1, _, _, _, _, _, _ = net(image_tensor)
     prediction = d1[:, 0, :, :]

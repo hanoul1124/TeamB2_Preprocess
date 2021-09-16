@@ -1,6 +1,7 @@
 import typer
 from pathlib import Path
 from preprocess import resizing_cloth, resizing_human
+import os
 
 
 app = typer.Typer()
@@ -20,11 +21,14 @@ def resize_cloth(
 
 @app.command()
 def test_human(
-    image_file: str = typer.Argument(..., help="Cloth Image files directory"),
+    # image_file: str = typer.Argument(..., help="Cloth Image files directory"),
+    image_path: Path = typer.Argument(..., help="Cloth Image files directory"),
     temp_size: int = typer.Option(512, help="Size of the temp resizing before inference"),
 ):
-    resized_img = resizing_human(image_file, temp_size=temp_size)
-    resized_img.save(f'./test.jpg')
+    image_list = os.listdir(image_path)
+    for img_path in image_list:
+        resized_img = resizing_human(f'{image_path}/{img_path}', temp_size=temp_size)
+        resized_img.save(img_path)
 
 
 if __name__ == "__main__":

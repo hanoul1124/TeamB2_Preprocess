@@ -73,7 +73,7 @@ def trim_hub(mask_im):
 
 def crop_and_resize(images, bbox, target_size):
     crop_images = [image.crop(bbox) for image in images]
-    return (img.resize(target_size, resample=Image.NEAREST) for img in crop_images)
+    return (img.resize(target_size) for img in crop_images)
 
 
 def temp_resize(output_size, image, lib="ski"):
