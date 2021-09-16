@@ -20,10 +20,14 @@
     ```
 
     - human_seg.pth : https://drive.google.com/file/d/1-Yg0cxgrNhHP-016FPdp902BR-kSsA4P/view?usp=sharing
-
     - cloth_seg.pth: https://github.com/ternaus/cloths_segmentation/releases/download/0.0.1/weights.zip
 
+- **수정사항**
+    - `resize.py`의 `resizing` 함수에서, `bbox`를 얻기 위해 사용하는 `trim` 함수가 두 가지 존재한다. `trim` 함수는 비교적 다양한 이미지에 대응할 수 있도록 설정되었고, `trim_hub`함수는 AI Hub 이미지에 좀 더 최적화되도록 리사이징이 이루어진다(초기 리사이즈 함수 그대로임). 시연을 위해서 AI Hub 모델 이미지를 사용할 경우, 현재의 설정인 `trim_hub` 함수를 사용한 상태로 진행해야 할 것. 
+
 - 사용법
+
+    - #### 주의사항 : 이미지 크기가 target_size인 192 * 256 보다 큰 이미지를 사용해야 전처리 결과가 더욱 좋다. 또한 이미지의 width(높이가 더 긴 사진) 혹은 height(너비가 더 긴 사진)가 설정한 temp_size 크기보다는 큰 사진을 사용할 것을 권장.
 
     ```python
     # Human binarizatoin
@@ -48,12 +52,11 @@
     # 모델을 생성하고 추론 모드로 설정한 이후, 다음 함수를 사용하여 동일한 동작을 수행
     resized_image = resizing_human(request.files['file'], model=model, temp_size=384)
     ```
-    
+
     ```bash
     # Cloth binarization
     python main.py resize-cloth <Image path> <Save path> --temp-size <int:temp_size>
     ```
-    
 
 
 
