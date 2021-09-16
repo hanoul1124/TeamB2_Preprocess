@@ -25,8 +25,9 @@ def human_binarization(image_file, model, temp_size):
     image = io.imread(image_file)
     # resized_image = temp_resize(temp_size, image)
     resized_image = image
-    tmp = (resized_image*255).astype(np.uint8)
-    orig_img = Image.fromarray(tmp)
+    # tmp = (resized_image*255).astype(np.uint8)
+    # orig_img = Image.fromarray(tmp)
+    orig_img = Image.fromarray(image)
 
     image_tensor = image_to_tensor(resized_image)
 
@@ -41,8 +42,7 @@ def human_binarization(image_file, model, temp_size):
     normalized_pred = (prediction - min_p) / (max_p - prediction)
     pred = normalized_pred.squeeze()
     pred_np = pred.cpu().data.numpy()
-
-    masked_image = Image.fromarray(pred_np*255).convert('RGB')
+    masked_image = Image.fromarray(pred_np * 255).convert('RGB')
     del d1
 
     return orig_img, masked_image
